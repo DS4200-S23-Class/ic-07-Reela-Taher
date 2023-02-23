@@ -1,35 +1,32 @@
+// script.js
 
-    const height = 500;
-    const width = 500;
-    const margin = {left: 50, right: 50, top: 50, bottom: 50}
+const data = [55000, 48000, 27000, 66000, 90000];
 
-    const svg = d3.select("#vis1")
-                    .append("svg")
-                    .attr("height", height)
-                    .attr("width", width)
-                    .attr("class", "frame");
+const margin = { top: 20, right: 20, bottom: 30, left: 50 };
+const width = 800 - margin.left - margin.right;
+const height = 500 - margin.top - margin.bottom;
 
-    // given data
-    const data = [55000, 48000, 27000, 66000, 90000];
+const svg = d3.select('svg')
+  .attr('width', width + margin.left + margin.right)
+  .attr('height', height + margin.top + margin.bottom);
 
-    // y-axis scale
-    const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data)])
-      .range([height, 0]);
+const g = svg.append('g')
+  .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data)])
+  .range([height, 0]);
 
-    // appends points to svg
-    svg.selectAll("circle")
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("cx", width / 2)
-      .attr("cy", d => yScale(d))
-      .attr("r", 5)
-      .attr("fill", "black");
+const yAxis = d3.axisLeft(y);
 
-    // y-axis
-    const y_axis = d3.axisLeft(yScale);
-    svg.append("g")
-      .attr("class", "y axis")
-      .call(y_axis);
+g.append('g')
+  .attr('class', 'axis')
+  .call(yAxis);
+
+g.selectAll('rect')
+  .data(data)
+  .enter().append('rect')
+    .attr('x', (d, i) => i * (width / data.length))
+    .attr('y', d => y(d))
+    .attr('width', width / data.length - 1)
+    .attr('height', d => height - y(d));
