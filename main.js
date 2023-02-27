@@ -1,32 +1,39 @@
-// script.js
+// main.js
 
+// Define the dataset
 const data = [55000, 48000, 27000, 66000, 90000];
 
-const margin = { top: 20, right: 20, bottom: 30, left: 50 };
-const width = 800 - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
+// Set the dimensions of the SVG element
+const width = 400;
+const height = 300;
+const barPadding = 5;
 
-const svg = d3.select('svg')
-  .attr('width', width + margin.left + margin.right)
-  .attr('height', height + margin.top + margin.bottom);
+// Create the SVG element
+const svg = d3.select("body")
+  .append("svg")
+  .attr("width", width)
+  .attr("height", height);
 
-const g = svg.append('g')
-  .attr('transform', `translate(${margin.left}, ${margin.top})`);
+// Create a group element for the bars
+const bars = svg.selectAll("rect")
+  .data(data)
+  .enter()
+  .append("g");
 
-const y = d3.scaleLinear()
+// Draw the bars
+bars.append("rect")
+  .attr("x", (d, i) => i * (width / data.length))
+  .attr("y", d => height - d)
+  .attr("width", width / data.length - barPadding)
+  .attr("height", d => d)
+
+// Add a vertical axis with labels
+const yScale = d3.scaleLinear()
   .domain([0, d3.max(data)])
   .range([height, 0]);
 
-const yAxis = d3.axisLeft(y);
+const yAxis = d3.axisLeft(yScale);
 
-g.append('g')
-  .attr('class', 'axis')
+svg.append("g")
+  .attr("transform", "translate(" + barPadding + ", 0)")
   .call(yAxis);
-
-g.selectAll('rect')
-  .data(data)
-  .enter().append('rect')
-    .attr('x', (d, i) => i * (width / data.length))
-    .attr('y', d => y(d))
-    .attr('width', width / data.length - 1)
-    .attr('height', d => height - y(d));

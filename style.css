@@ -3,28 +3,24 @@
 body {
   font-family: Arial, sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 10;
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
+/* Set the style for the bars */
+ rect {
+      fill: steelblue;
+    }
+    /* Set the style for the axis labels */
+ text {
+      font-family: Arial;
+      font-size: 12px;
+    }
 
 h1 {
-  font-size: 2.5rem;
-  margin-top: 0;
+  text-align: center;
 }
 
 svg {
   background-color: #f5f5f5;
   border: 1px solid #ddd;
-}
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
 }
